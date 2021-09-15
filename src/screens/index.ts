@@ -1,4 +1,3 @@
 export * from './Auth'
-export * from './UserProfile'
-export * from './Splash'
-export * from './Suggestions'
+export * from './SplashScreen'
+export * from './LandingScreens'

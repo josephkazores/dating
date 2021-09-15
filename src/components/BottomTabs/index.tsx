@@ -4,6 +4,8 @@ import { Pressable, View, useWindowDimensions } from 'react-native'
 import { Icon } from 'react-native-elements'
 import styles from './styles'
 import { useTheme } from '../../provider'
+import { RootState } from '../../store/types'
+import { useSelector } from 'react-redux'
 
 export const BottomTabs: React.FC<any> = ({
   state,
@@ -13,6 +15,11 @@ export const BottomTabs: React.FC<any> = ({
   const { theme } = useTheme()
   const { width } = useWindowDimensions()
   const focusedOptions = descriptors[state.routes[state.index].key].options
+
+  const { likes, matches } = useSelector(
+    // eslint-disable-next-line no-shadow
+    (state: RootState) => state.likesReducer,
+  )
 
   if (focusedOptions.tabBarVisible === false) {
     return null
@@ -25,9 +32,10 @@ export const BottomTabs: React.FC<any> = ({
         alignItems: 'center',
         paddingBottom: 2,
         backgroundColor: theme?.colors.background,
+        paddingHorizontal: Math.round(width / (state.routes.length * 4) + 5),
       }}>
       {state.routes.length > 1 &&
-        state.routes.map((route, index) => {
+        state.routes.map((route: any, index: number) => {
           const { options } = descriptors[route.key]
           const label =
             options.tabBarLabel !== undefined
@@ -60,10 +68,9 @@ export const BottomTabs: React.FC<any> = ({
           return (
             <Pressable
               key={label}
-              android_ripple={{
-                radius: Math.round(width / (state.routes.length + 2) + 4),
-                borderless: true,
-              }}
+              // android_ripple={{
+              //   radius: Math.round(width / (state.routes.length * 2) + 5),
+              // }}
               accessibilityState={isFocused ? { selected: true } : {}}
               accessibilityLabel={options.tabBarAccessibilityLabel}
               testID={options.tabBarTestID}
@@ -71,32 +78,50 @@ export const BottomTabs: React.FC<any> = ({
               onLongPress={onLongPress}
               style={{ flex: 1, alignItems: 'center', paddingTop: 5 }}>
               <>
-                {/* <View
-                style={[
-                  styles.badgeContainer,
-                  { backgroundColor: theme.colors.background },
-                ]}>
-                <Text
-                  style={[
-                    {
-                      backgroundColor:
-                        route.name === 'Chats'
-                          ? theme.colors.notification
-                          : 'green',
-                      color: '#fff',
-                    },
-                    styles.badge,
-                  ]}>
-                  9
-                </Text>
-              </View> */}
+                {route.name === 'Likes' && likes?.length ? (
+                  <View
+                    style={[
+                      styles.badgeContainer,
+                      { backgroundColor: theme?.colors.background },
+                    ]}>
+                    <Text
+                      style={[
+                        {
+                          backgroundColor: theme?.colors.notification,
+                          color: '#fff',
+                        },
+                        styles.badge,
+                      ]}>
+                      {likes}
+                    </Text>
+                  </View>
+                ) : route.name === 'Matches' && likes?.length ? (
+                  <View
+                    style={[
+                      styles.badgeContainer,
+                      { backgroundColor: theme?.colors.background },
+                    ]}>
+                    <Text
+                      style={[
+                        {
+                          backgroundColor: theme?.colors.notification,
+                          color: '#fff',
+                        },
+                        styles.badge,
+                      ]}>
+                      {matches}
+                    </Text>
+                  </View>
+                ) : (
+                  <View style={{ height: 8 }} />
+                )}
                 {options.icon && (
                   <Icon
                     {...options.icon}
                     color={isFocused ? theme?.colors.primary : '#737373'}
                   />
                 )}
-                <Text
+                {/* <Text
                   style={[
                     {
                       color: isFocused ? theme?.colors.primary : '#737373',
@@ -104,7 +129,8 @@ export const BottomTabs: React.FC<any> = ({
                     styles.label,
                   ]}>
                   {label}
-                </Text>
+                </Text> */}
+                <View style={{ height: 8 }} />
               </>
             </Pressable>
           )

@@ -6,7 +6,7 @@ import '@react-native-firebase/firestore'
 
 // import DevicesFBServices from './devicesFB.services'
 // import MessagingFBServices from './messagingFB.services'
-import config from './config.json'
+import config from '../config/firebase.json'
 
 class Firebase {
   constructor() {

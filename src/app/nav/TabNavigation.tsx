@@ -13,9 +13,9 @@ export const TabNavigation = () => {
     <Tab.Navigator
       initialRouteName="Home"
       tabBar={(props) => <BottomTabs {...props} />}
-      tabBarOptions={{
-        activeBackgroundColor: theme?.colors.background,
-        inactiveBackgroundColor: theme?.colors.background,
+      screenOptions={{
+        tabBarActiveBackgroundColor: theme?.colors.background,
+        tabBarInactiveBackgroundColor: theme?.colors.background,
       }}>
       {homeTab.map(({ name, options, ...rest }) => (
         <Tab.Screen

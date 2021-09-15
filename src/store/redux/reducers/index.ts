@@ -1,7 +1,7 @@
-import Auth from './Auth'
-import UserProfile from './UserProfile'
+import AuthReducer from './AuthReducer'
+import LikesReducer from './LikesReducer'
 
 export const reducers = {
-  user: UserProfile,
-  auth: Auth,
+  authReducer: AuthReducer,
+  likesReducer: LikesReducer,
 }

@@ -4,10 +4,9 @@ import { NavigationContainer } from '@react-navigation/native'
 import { Provider as PaperProvider, Portal } from 'react-native-paper'
 import { DarkTheme, DefaultTheme } from '../constants'
 import { useAsyncStorage } from '../hooks'
-import { DarkTheme as theme } from '../constants'
 
 declare type ThemeContextTypes = {
-  theme?: typeof theme
+  theme?: typeof DarkTheme
   darkMode?: boolean
   toggleDarkMode?: () => any
 }

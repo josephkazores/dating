@@ -1,53 +1,45 @@
 import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 import { createStackNavigator } from '@react-navigation/stack'
 
 //routes
-import { stack } from '../routes'
+import { stack, auth } from '../routes'
 
 //types
 import { Screens } from '../types'
+import { RootState } from '../../store/types'
 
-// import mainStack from 'Connect/app/constants/routes/mainStack'
-// import authStack from 'Connect/app/constants/routes/authStack'
-// import { useAuth } from '../contexts/AuthProvider'
-// import AuthLoader from '../screens/AuthLoader'
+//screens
+import { SplashScreen } from '../../screens'
 
 const Stack = createStackNavigator()
 
 export const StackNavigation = () => {
-  //   const [authLoader, setAuthLoader] = useState(true)
-  //   const [stack, setStack] = useState<Screens>([])
-  //   const [initialRouteName, setInitialRouteName] = useState('')
-  //   const [loading, setLoading] = useState(true)
+  const { loggedIn } = useSelector((state: RootState) => state.authReducer)
 
-  //   const { loggedIn, loggedInFromStorage } = useAuth()
+  const [routes, setRoutes] = useState<Screens>([])
+  const [loading, setLoading] = useState(true)
 
-  //   useEffect(() => {
-  //     if (loggedInFromStorage) {
-  //       setStack(loggedIn ? mainStack : authStack)
-  //       setInitialRouteName(loggedIn ? 'Home' : 'SignIn')
-  //     }
-  //   }, [loggedIn, loggedInFromStorage])
+  console.log(loggedIn)
+  useEffect(() => {
+    setRoutes(loggedIn ? stack : auth)
+  }, [loggedIn])
 
-  //   useEffect(() => {
-  //     if (stack.length !== 0 && initialRouteName) setAuthLoader(false)
-  //   }, [authLoader, initialRouteName])
+  useEffect(() => {
+    if (routes.length !== 0) {
+      setTimeout(() => {
+        setLoading(false)
+      }, 2000)
+    }
+  }, [routes])
 
-  //   useEffect(() => {
-  //     if (stack.length !== 0) {
-  //       setTimeout(() => {
-  //         setLoading()
-  //       }, 1000)
-  //     }
-  //   }, [stack])
-
-  //   if (loading) {
-  //     return <AuthLoader />
-  //   }
+  if (loading) {
+    return <SplashScreen />
+  }
 
   return (
-    <Stack.Navigator initialRouteName={'Home'}>
-      {stack.map(({ name, options, ...rest }) => (
+    <Stack.Navigator>
+      {routes.map(({ name, options, ...rest }) => (
         <Stack.Screen
           key={name}
           name={name}
